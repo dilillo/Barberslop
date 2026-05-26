@@ -88,7 +88,7 @@ Examples of foundational tasks (adjust based on your project):
 
 - [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
 - [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
-- [ ] T012 [US1] Record coverage evidence for User Story 1 and verify it meets the 90% minimum
+- [ ] T012 [US1] Record coverage results in specs/[###-feature-name]/quickstart.md and verify User Story 1 meets the 90% minimum
 
 ### Implementation for User Story 1
 
@@ -114,7 +114,7 @@ Examples of foundational tasks (adjust based on your project):
 
 - [ ] T020 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
 - [ ] T021 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
-- [ ] T022 [US2] Record coverage evidence for User Story 2 and verify it meets the 90% minimum
+- [ ] T022 [US2] Record coverage results in specs/[###-feature-name]/quickstart.md and verify User Story 2 meets the 90% minimum
 
 ### Implementation for User Story 2
 
@@ -138,7 +138,7 @@ Examples of foundational tasks (adjust based on your project):
 
 - [ ] T028 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
 - [ ] T029 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
-- [ ] T030 [US3] Record coverage evidence for User Story 3 and verify it meets the 90% minimum
+- [ ] T030 [US3] Record coverage results in specs/[###-feature-name]/quickstart.md and verify User Story 3 meets the 90% minimum
 
 ### Implementation for User Story 3
 
