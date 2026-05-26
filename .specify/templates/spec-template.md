@@ -98,6 +98,28 @@
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
+### Quality & Compliance Requirements *(mandatory)*
+
+- **QC-001**: Feature specification MUST define the automated test approach needed
+  to validate the change and meet the minimum 90% coverage expectation.
+- **QC-002**: Public APIs introduced or changed by this feature MUST identify the
+  required docstrings and usage examples that ship with implementation.
+- **QC-003**: Security requirements MUST describe input validation, output
+  sanitization, and any OWASP-relevant protections.
+- **QC-004**: The design MUST state whether Vertical Slice architecture applies
+  and how the feature fits the chosen slice boundaries.
+- **QC-005**: The specification MUST note any semantic versioning impact on public
+  contracts, packages, or releases.
+- **QC-006**: The feature MUST preserve contributor workflows that run on
+  Microsoft Windows desktop environments.
+
+### Non-Functional Requirements *(mandatory)*
+
+- **NFR-001**: Code changes MUST prioritize readability and maintainability over
+  unnecessary complexity.
+- **NFR-002**: Performance expectations MUST be measurable when optimization is
+  required; otherwise the specification MUST state that clarity takes priority.
+
 ### Key Entities *(include if feature involves data)*
 
 - **[Entity 1]**: [What it represents, key attributes without implementation]

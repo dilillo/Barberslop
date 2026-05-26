@@ -40,7 +40,22 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Code quality approach keeps the design simple, maintainable, and consistent with
+  SOLID where useful.
+- Naming conventions for new variables/functions/types are identified and follow
+  camelCase / PascalCase rules.
+- Automated testing strategy is defined for each user story, including how the
+  work will meet the mandatory 90% coverage expectation.
+- Public API documentation and usage example updates are identified.
+- Security controls cover input validation, output sanitization, and any OWASP-
+  relevant risk areas.
+- Vertical Slice architecture applicability is addressed and the selected slice
+  boundaries are documented.
+- Performance impact is justified with a measurable target or explicitly noted as
+  not performance-sensitive.
+- Semantic versioning impact is assessed for any public-facing change.
+- All planned contributor tooling and workflows remain runnable on Microsoft
+  Windows desktop environments.
 
 ## Project Structure
 
