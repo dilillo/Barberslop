@@ -1,6 +1,6 @@
 {
   "integration": "speckit",
-  "version": "0.8.13",
+  "version": "0.8.17",
   "installed_at": "2026-05-23T15:49:17.627818+00:00",
   "files": {
     ".specify/scripts/powershell/setup-plan.ps1": "137af47d79085d2770714ece307ed8f56f0d4cb1e9ec0c17db5c5c0d0b8a8c4c",

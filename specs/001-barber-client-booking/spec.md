@@ -8,6 +8,15 @@
 
 **Input**: User description: "I'm building an application platform for barbers and their clients..."
 
+## Clarifications
+
+### Session 2026-05-28
+
+- Q: What happens to already-booked future appointments when a client is disinvited? → A: Keep already-booked future appointments, but block any new bookings.
+- Q: Who can view a client's full contact details? → A: Only the client and barbers they are approved with can view full contact details.
+- Q: What happens when a standing appointment conflicts with newly added vacation or temporary unavailability? → A: Keep the series, skip only the conflicting occurrence, and notify the client.
+- Q: How should reminder delivery behave when one configured channel fails? → A: Send all channels independently, count the reminder as sent if at least one succeeds, and retry failed channels.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Book Appointments Within Availability Rules (Priority: P1)
@@ -63,9 +72,9 @@ Barbers define weekly schedules, vacation/unavailable times, service catalog det
 - A barber has no open slots in the requested date range and the user selects "first available".
 - A service duration exceeds any remaining time in otherwise open schedule windows.
 - A client attempts to book for a family member who is not yet linked to their account.
-- A standing appointment conflicts with a newly added vacation day or temporary unavailability.
-- A reminder channel fails (for example SMS delivery failure) while others succeed.
-- A disinvited client still has upcoming appointments at removal time.
+- A standing appointment conflicts with a newly added vacation day or temporary unavailability; the recurring series remains active, the conflicting occurrence is skipped, and the client is notified.
+- A reminder channel fails (for example SMS delivery failure) while others succeed; the reminder is still counted as sent if at least one channel succeeds, and failed channels are retried.
+- A disinvited client still has upcoming appointments at removal time; the existing appointments remain scheduled, but the client cannot create additional bookings.
 
 ## Requirements *(mandatory)*
 
@@ -90,12 +99,16 @@ Barbers define weekly schedules, vacation/unavailable times, service catalog det
 - **FR-017**: The system MUST send appointment reminders through email, calendar invite, text message, and mobile notification before upcoming appointments.
 - **FR-018**: The system MUST offer rebooking options immediately after a client cancels an appointment.
 - **FR-019**: The system MUST allow barbers to disinvite clients and record a reason category (including repeated no-shows and lost contact).
+- **FR-020**: The system MUST preserve already-booked future appointments when a client is disinvited while preventing that client from creating any additional bookings with the same barber.
+- **FR-021**: The system MUST restrict full client contact details to the client and barbers with whom that client already has an approved relationship.
+- **FR-022**: The system MUST keep a standing appointment series active when a newly blocked time conflicts with one occurrence, skip only the conflicting occurrence, and notify the affected client.
+- **FR-023**: The system MUST attempt each configured reminder channel independently, count the reminder as delivered when at least one channel succeeds, and retry channels that fail.
 
 ### Quality & Compliance Requirements *(mandatory)*
 
 - **QC-001**: The specification MUST define acceptance tests that cover client booking, barber booking, invitation lifecycle, disinvitation restrictions, and reminder delivery workflows.
 - **QC-002**: Any externally visible contract changes introduced by this feature MUST include updated user-facing documentation for platform actors.
-- **QC-003**: The feature MUST validate contact information inputs and protect client contact data from unauthorized visibility.
+- **QC-003**: The feature MUST validate contact information inputs and protect client contact data so only the client and barbers with an approved relationship can view full contact details.
 - **QC-004**: The feature MUST define clear boundaries between client self-service actions and barber-managed actions.
 - **QC-005**: The feature MUST identify release-impacting behavior changes that affect existing booking or invitation workflows.
 - **QC-006**: The feature MUST preserve workflows for contributors and users operating from Microsoft Windows environments.
