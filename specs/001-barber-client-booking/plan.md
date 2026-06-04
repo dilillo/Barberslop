@@ -1,128 +1,108 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: Barber Client Booking Platform
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+**Branch**: `copilot/create-plan-for-barber-solution` | **Date**: 2026-06-04 | **Spec**: [spec.md](./spec.md)
 
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
-
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
+**Input**: Feature specification from `specs/001-barber-client-booking/spec.md`
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Build the Barberslop booking platform — a multi-barber, multi-client appointment scheduling application. Clients self-register, discover barbers, and request to join a barber's clientele; barbers configure their services, schedule, and per-client booking limits. The system books, reminders, and cancels appointments across a reliable availability engine. The technical approach uses .NET 10 with ASP.NET Core Razor Pages for the web UI, .NET Aspire for local orchestration and Azure-hosted deployment, PostgreSQL (EF Core/Npgsql) for persistence, Bootstrap with a classic barber theme (deep red/cream/navy, barber-pole motifs), xUnit for unit tests, and Testcontainers-backed integration tests. GitHub Actions deploy to Azure via the Aspire Azure Developer CLI (`azd`) pipeline.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
+**Language/Version**: C# on .NET 10
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]
+**Primary Dependencies**: ASP.NET Core Razor Pages, .NET Aspire (AppHost + ServiceDefaults), Entity Framework Core 9 with Npgsql provider, Bootstrap 5, xUnit 2, Testcontainers.PostgreSQL, FluentValidation, SendGrid (email), Twilio (SMS)
 
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]
+**Storage**: PostgreSQL 16
 
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
+**Testing**: xUnit 2 (unit tests); ASP.NET Core WebApplicationFactory + Testcontainers (integration tests); coverlet for coverage
 
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
+**Target Platform**: Azure Container Apps (via .NET Aspire publish/`azd up`)
 
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Project Type**: Web application — ASP.NET Core Razor Pages served by Aspire-orchestrated topology
 
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]
+**Performance Goals**: Availability search response p95 ≤ 2 s (NFR-002). Booking confirmation p95 ≤ 2 s (SC-002).
 
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
+**Constraints**: Windows-compatible contributor workflow; no POSIX-only tooling; input validation on all forms; authorization boundary between barber and client roles; OWASP Top 10 mitigated
 
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]
-
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Scale/Scope**: Multi-barber/multi-client platform — invitation lifecycle, appointment booking, service catalog, availability engine, reminder dispatch on four channels
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- Code quality approach keeps the design simple, maintainable, and consistent with
-  SOLID where useful.
-- Naming conventions for new variables/functions/types are identified and follow
-  camelCase / PascalCase rules.
-- Automated testing strategy is defined for each user story, including how the
-  work will meet the mandatory 90% coverage expectation.
-- Public API documentation and usage example updates are identified.
-- Security controls cover input validation, output sanitization, and any OWASP-
-  relevant risk areas.
-- Vertical Slice architecture applicability is addressed and the selected slice
-  boundaries are documented.
-- Performance impact is justified with a measurable target or explicitly noted as
-  not performance-sensitive.
-- Semantic versioning impact is assessed for any public-facing change.
-- All planned contributor tooling and workflows remain runnable on Microsoft
-  Windows desktop environments.
+- [x] Code quality approach keeps the design simple, maintainable, and consistent with SOLID where useful. Vertical slices enforce cohesion and prevent cross-cutting entanglement.
+- [x] Naming conventions: C# camelCase for locals/parameters, PascalCase for types/properties/methods — consistently applied across all slices.
+- [x] Automated testing strategy defined: unit tests cover booking-limit enforcement, availability calculation, invitation state machine, and reminder scheduling logic. Integration tests exercise DB persistence, form submissions, and end-to-end workflows per acceptance scenario. Coverage gate: ≥ 90% for delivered behavior.
+- [x] Public interface documentation: Razor Page routes and form contracts documented in `contracts/`. Developer quickstart in `quickstart.md`. Behavior changes noted in `data-model.md`.
+- [x] Security: FluentValidation validates all form inputs; EF Core parameterized queries prevent SQL injection; ASP.NET Core authorization policies enforce barber/client role boundaries; contact data access scoped to authorized actors; CSRF protection via antiforgery tokens (default in Razor Pages); reminder channel failures handled without data loss.
+- [x] Vertical Slice architecture: each major workflow (booking, invitation, schedule, reminders) is a self-contained slice with its own page, handler, service, domain rules, and tests.
+- [x] Performance target declared: p95 ≤ 2 s for availability search and booking operations; no premature optimization otherwise.
+- [x] Semantic versioning: initial release tagged `1.0.0`; future breaking contract changes follow `MAJOR.MINOR.PATCH`.
+- [x] Windows compatibility: all scripts use PowerShell; `azd`, .NET CLI, and Docker Desktop run on Windows; no POSIX-only dependency.
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+specs/001-barber-client-booking/
+├── plan.md              # This file
+├── research.md          # Phase 0 research
+├── data-model.md        # Phase 1 entity model
+├── quickstart.md        # Phase 1 local/test/deploy guide
+├── contracts/           # Phase 1 UI/page contracts
+│   ├── booking.md
+│   ├── invitation.md
+│   ├── availability.md
+│   └── reminder-events.md
+└── tasks.md             # Phase 2 task list (created by /speckit.tasks)
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+Barberslop.sln
+
 src/
-├── models/
-├── services/
-├── cli/
-└── lib/
+├── Barberslop.AppHost/          # .NET Aspire AppHost — wires all services
+├── Barberslop.ServiceDefaults/  # Aspire shared service defaults (telemetry, health)
+├── Barberslop.Web/              # ASP.NET Core Razor Pages web app
+│   ├── Pages/
+│   │   ├── Shared/              # _Layout.cshtml, _BarberPole partial
+│   │   ├── Booking/             # Book, Confirm, Cancel pages
+│   │   ├── Invitation/          # Request, Accept, Disinvite pages
+│   │   ├── Schedule/            # Availability, Vacation pages
+│   │   ├── Services/            # Service catalog pages
+│   │   └── Account/             # Register, Login pages
+│   ├── Features/                # Vertical-slice handlers and services
+│   │   ├── Booking/
+│   │   ├── Invitation/
+│   │   ├── Schedule/
+│   │   ├── Services/
+│   │   └── Reminders/
+│   ├── Domain/                  # Core domain models and interfaces
+│   ├── Data/                    # EF Core DbContext and migrations
+│   ├── Infrastructure/          # Reminder channel adapters (email, SMS, push, calendar)
+│   └── wwwroot/
+│       ├── css/
+│       │   └── barberslop.css   # Bootstrap overrides + barber theme
+│       └── images/
+│           └── barber-pole.svg  # Reusable barber-pole asset
 
 tests/
-├── contract/
-├── integration/
-└── unit/
+├── Barberslop.UnitTests/        # xUnit unit tests (domain logic, services)
+└── Barberslop.IntegrationTests/ # xUnit + WebApplicationFactory + Testcontainers
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+.github/
+└── workflows/
+    ├── ci.yml                   # Build + test on every PR
+    └── deploy-azure.yml         # azd up to Azure on merge to main
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Aspire multi-project layout. `Barberslop.AppHost` orchestrates the web app and PostgreSQL container locally and publishes Bicep/Azure resources via `azd`. `Barberslop.Web` owns all Razor Pages, vertical-slice feature handlers, EF Core data layer, and reminder infrastructure adapters. Tests live in two xUnit projects: one for pure domain/unit tests, one for integration tests backed by Testcontainers.
 
 ## Complexity Tracking
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
-
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+> No constitution violations required. No entries needed.
