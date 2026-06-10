@@ -12,9 +12,9 @@ Build the Barberslop booking platform — a multi-barber, multi-client appointme
 
 **Language/Version**: C# on .NET 10
 
-**Primary Dependencies**: ASP.NET Core Razor Pages, .NET Aspire (AppHost + ServiceDefaults), Entity Framework Core 9 with Npgsql provider, Bootstrap 5, xUnit 2, Testcontainers.PostgreSQL, FluentValidation, SendGrid (email), Twilio (SMS)
+**Primary Dependencies**: ASP.NET Core Razor Pages, .NET Aspire (AppHost + ServiceDefaults), Entity Framework Core 9 with Npgsql provider, Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite, NetTopologySuite, Bootstrap 5, xUnit 2, Testcontainers.PostgreSQL, FluentValidation, SendGrid (email), Twilio (SMS), Azure Notification Hubs (mobile push)
 
-**Storage**: PostgreSQL 16
+**Storage**: PostgreSQL 16 with PostGIS extension enabled (required for `BarberProfile.geoLocation` geographic search, FR-003)
 
 **Testing**: xUnit 2 (unit tests); ASP.NET Core WebApplicationFactory + Testcontainers (integration tests); coverlet for coverage
 
@@ -22,7 +22,9 @@ Build the Barberslop booking platform — a multi-barber, multi-client appointme
 
 **Project Type**: Web application — ASP.NET Core Razor Pages served by Aspire-orchestrated topology
 
-**Performance Goals**: Availability search response p95 ≤ 2 s (NFR-002). Booking confirmation p95 ≤ 2 s (SC-002).
+**Performance Goals**: Availability search response p95 ≤ 2 s (NFR-002, SC-002).
+
+**Background Processing**: Reminder dispatch (FR-017) and invitation notifications (FR-005) are handled by an ASP.NET Core hosted service (`IHostedService`) running within `Barberslop.Web`. The hosted service polls `ReminderDispatch` rows where `status = Pending` and `scheduledFor ≤ now`, dispatches on all configured channels, and updates status. This must satisfy the SC-003 (≤ 1-minute notification SLA) and SC-004 (≥ 95% pre-appointment reminder delivery) targets. If queuing volume grows beyond local hosted-service capacity, the designated escalation path is Azure Service Bus or Azure Functions.
 
 **Constraints**: Windows-compatible contributor workflow; no POSIX-only tooling; input validation on all forms; authorization boundary between barber and client roles; OWASP Top 10 mitigated
 
@@ -84,7 +86,7 @@ src/
 │   │   └── Reminders/
 │   ├── Domain/                  # Core domain models and interfaces
 │   ├── Data/                    # EF Core DbContext and migrations
-│   ├── Infrastructure/          # Reminder channel adapters (email, SMS, push, calendar)
+│   ├── Infrastructure/          # Reminder channel adapters (email, SMS, push, calendar); ReminderDispatchService (IHostedService)
 │   └── wwwroot/
 │       ├── css/
 │       │   └── barberslop.css   # Bootstrap overrides + barber theme
