@@ -12,8 +12,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add Aspire service defaults
 builder.AddServiceDefaults();
 
-// Add PostgreSQL via Aspire
-builder.AddNpgsqlDbContext<ApplicationDbContext>("barberslop");
+// Add PostgreSQL via Aspire (skip in testing)
+if (!builder.Environment.IsEnvironment("Testing"))
+{
+    builder.AddNpgsqlDbContext<ApplicationDbContext>("barberslop");
+}
+else
+{
+    // In testing, the test host provides its own DbContext configuration
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseInMemoryDatabase("testing"));
+}
 
 // Add Identity
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
@@ -54,7 +63,14 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await db.Database.MigrateAsync();
+    if (!app.Environment.IsEnvironment("Testing"))
+    {
+        await db.Database.MigrateAsync();
+    }
+    else
+    {
+        await db.Database.EnsureCreatedAsync();
+    }
 
     // Seed roles
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
