@@ -66,6 +66,7 @@ Barbers define weekly schedules, vacation/unavailable times, service catalog det
 - A standing appointment conflicts with a newly added vacation day or temporary unavailability.
 - A reminder channel fails (for example SMS delivery failure) while others succeed.
 - A disinvited client still has upcoming appointments at removal time.
+- A client attempts to book for a family member who was removed from their account after the booking was initiated.
 
 ## Requirements *(mandatory)*
 
@@ -73,7 +74,7 @@ Barbers define weekly schedules, vacation/unavailable times, service catalog det
 
 - **FR-001**: The system MUST allow clients to self-register and maintain a profile containing name, email address, and phone number.
 - **FR-002**: The system MUST allow barbers to maintain a unique invitation code that links approved clients to their clientele.
-- **FR-003**: The system MUST allow clients to discover barbers by salon name, barber name, and geographic area.
+- **FR-003**: The system MUST allow clients to discover barbers by salon name, barber name, and geographic area. Geographic area search MUST support a configurable search radius (default: 25 miles / 40 km) from a client-supplied location or the client's registered location.
 - **FR-004**: The system MUST allow clients to request inclusion in a barber’s clientele by submitting name, email, and phone number.
 - **FR-005**: The system MUST notify clients when a barber accepts their invitation request.
 - **FR-006**: The system MUST prevent disinvited or removed clients from submitting new invitation requests to the same barber.
@@ -90,6 +91,7 @@ Barbers define weekly schedules, vacation/unavailable times, service catalog det
 - **FR-017**: The system MUST send appointment reminders through email, calendar invite, text message, and mobile notification before upcoming appointments.
 - **FR-018**: The system MUST offer rebooking options immediately after a client cancels an appointment.
 - **FR-019**: The system MUST allow barbers to disinvite clients and record a reason category (including repeated no-shows and lost contact).
+- **FR-020**: The system MUST allow clients to add, edit, and remove linked family members from their profile. A family member profile MUST include at least a display name and an optional relationship label.
 
 ### Quality & Compliance Requirements *(mandatory)*
 
