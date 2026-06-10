@@ -1,0 +1,49 @@
+@page
+@model Barberslop.Web.Pages.Invitation.PendingModel
+@{
+    ViewData["Title"] = "Pending Requests";
+}
+
+<h2>Pending Client Requests</h2>
+
+@if (Model.PendingRequests.Count == 0)
+{
+    <p class="text-muted">No pending requests at this time.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Client Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Requested</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var request in Model.PendingRequests)
+                {
+                    <tr>
+                        <td>@request.ClientName</td>
+                        <td>@request.Email</td>
+                        <td>@request.Phone</td>
+                        <td>@request.RequestedAt.ToLocalTime().ToString("g")</td>
+                        <td>
+                            <form method="post" asp-page-handler="Accept" class="d-inline">
+                                <input type="hidden" name="InvitationRequestId" value="@request.Id" />
+                                <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                            </form>
+                            <form method="post" asp-page-handler="Reject" class="d-inline">
+                                <input type="hidden" name="InvitationRequestId" value="@request.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

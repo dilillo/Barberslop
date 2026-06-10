@@ -1,0 +1,55 @@
+@page
+@model Barberslop.Web.Pages.Invitation.DiscoverModel
+@{
+    ViewData["Title"] = "Find Barbers";
+}
+
+<h2>Find a Barber</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="BarberName" class="form-label">Barber Name</label>
+                    <input asp-for="BarberName" class="form-control" placeholder="Search by name..." />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="SalonName" class="form-label">Salon Name</label>
+                    <input asp-for="SalonName" class="form-control" placeholder="Search by salon..." />
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-barber">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.Results.Count > 0)
+{
+    <div class="row g-3">
+        @foreach (var barber in Model.Results)
+        {
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@barber.DisplayName</h5>
+                        @if (!string.IsNullOrEmpty(barber.SalonName))
+                        {
+                            <p class="card-text text-muted">@barber.SalonName</p>
+                        }
+                        <form asp-page="/Invitation/Request" method="post">
+                            <input type="hidden" name="BarberProfileId" value="@barber.Id" />
+                            <button type="submit" class="btn btn-outline-barber btn-sm">Request to Join</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else if (Model.SearchPerformed)
+{
+    <p class="text-muted">No barbers found matching your search criteria.</p>
+}

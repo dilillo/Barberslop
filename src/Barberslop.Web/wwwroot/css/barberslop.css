@@ -1,0 +1,90 @@
+:root {
+    --barber-red:   #8B1A1A;
+    --barber-cream: #FFF5E1;
+    --barber-navy:  #1A2744;
+    --barber-black: #111111;
+
+    /* Bootstrap token overrides */
+    --bs-primary:          var(--barber-red);
+    --bs-primary-rgb:      139, 26, 26;
+    --bs-body-bg:          var(--barber-cream);
+    --bs-body-color:       var(--barber-black);
+    --bs-link-color:       var(--barber-navy);
+}
+
+.bg-barber-navy {
+    background-color: var(--barber-navy) !important;
+}
+
+.bg-barber-red {
+    background-color: var(--barber-red) !important;
+}
+
+.bg-barber-cream {
+    background-color: var(--barber-cream) !important;
+}
+
+.text-barber-red {
+    color: var(--barber-red) !important;
+}
+
+.text-barber-navy {
+    color: var(--barber-navy) !important;
+}
+
+.btn-barber {
+    background-color: var(--barber-red);
+    border-color: var(--barber-red);
+    color: #fff;
+}
+
+.btn-barber:hover {
+    background-color: #6b1414;
+    border-color: #6b1414;
+    color: #fff;
+}
+
+.btn-outline-barber {
+    border-color: var(--barber-red);
+    color: var(--barber-red);
+}
+
+.btn-outline-barber:hover {
+    background-color: var(--barber-red);
+    color: #fff;
+}
+
+.card {
+    border-color: var(--barber-navy);
+}
+
+.card-header {
+    background-color: var(--barber-navy);
+    color: #fff;
+}
+
+.navbar-brand .barber-pole-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, var(--barber-navy) 0%, var(--barber-red) 100%);
+    color: #fff;
+    padding: 4rem 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.feature-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+}

@@ -1,0 +1,127 @@
+@page
+@model Barberslop.Web.Pages.Schedule.AvailabilityModel
+@{
+    ViewData["Title"] = "Manage Availability";
+}
+
+<h2>My Schedule</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Weekly Availability Rules</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.WeeklyRules.Count == 0)
+                {
+                    <p class="text-muted">No availability rules configured yet.</p>
+                }
+                else
+                {
+                    <table class="table table-sm">
+                        <thead>
+                            <tr><th>Day</th><th>Start</th><th>End</th><th>Effective From</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var rule in Model.WeeklyRules)
+                            {
+                                <tr>
+                                    <td>@rule.DayOfWeek</td>
+                                    <td>@rule.StartTime.ToString("h:mm tt")</td>
+                                    <td>@rule.EndTime.ToString("h:mm tt")</td>
+                                    <td>@rule.EffectiveFrom.ToString("d")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Vacation Periods</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.VacationPeriods.Count == 0)
+                {
+                    <p class="text-muted">No vacation periods scheduled.</p>
+                }
+                else
+                {
+                    <table class="table table-sm">
+                        <thead><tr><th>Start</th><th>End</th><th>Reason</th></tr></thead>
+                        <tbody>
+                            @foreach (var v in Model.VacationPeriods)
+                            {
+                                <tr>
+                                    <td>@v.StartDate.ToString("d")</td>
+                                    <td>@v.EndDate.ToString("d")</td>
+                                    <td>@v.Reason</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header"><h6 class="mb-0">Add Availability Rule</h6></div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="AddRule">
+                    <div class="mb-2">
+                        <label class="form-label">Day</label>
+                        <select name="DayOfWeek" class="form-select">
+                            @for (int i = 0; i < 7; i++)
+                            {
+                                <option value="@i">@((DayOfWeek)i)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Start Time</label>
+                        <input name="StartTime" type="time" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">End Time</label>
+                        <input name="EndTime" type="time" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Effective From</label>
+                        <input name="EffectiveFrom" type="date" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Timezone</label>
+                        <input name="TimeZoneId" class="form-control" value="America/New_York" required />
+                    </div>
+                    <button type="submit" class="btn btn-barber btn-sm w-100">Add Rule</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h6 class="mb-0">Add Vacation</h6></div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="AddVacation">
+                    <div class="mb-2">
+                        <label class="form-label">Start Date</label>
+                        <input name="StartDate" type="date" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">End Date</label>
+                        <input name="EndDate" type="date" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Reason</label>
+                        <input name="Reason" class="form-control" maxlength="200" />
+                    </div>
+                    <button type="submit" class="btn btn-barber btn-sm w-100">Add Vacation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

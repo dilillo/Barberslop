@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Barberslop.AppHost/Barberslop.AppHost.csproj" />
+    <Project Path="src/Barberslop.ServiceDefaults/Barberslop.ServiceDefaults.csproj" />
+    <Project Path="src/Barberslop.Web/Barberslop.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Barberslop.IntegrationTests/Barberslop.IntegrationTests.csproj" />
+    <Project Path="tests/Barberslop.UnitTests/Barberslop.UnitTests.csproj" />
+  </Folder>
+</Solution>
