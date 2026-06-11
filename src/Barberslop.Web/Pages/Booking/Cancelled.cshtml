@@ -1,0 +1,38 @@
+@page
+@model Barberslop.Web.Pages.Booking.CancelledModel
+@{
+    ViewData["Title"] = "Appointment Cancelled";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Appointment Cancelled</h5>
+            </div>
+            <div class="card-body">
+                <p>Your appointment has been cancelled.</p>
+
+                @if (Model.RebookingOptions.Count > 0)
+                {
+                    <h6>Rebook quickly:</h6>
+                    <div class="list-group">
+                        @foreach (var slot in Model.RebookingOptions)
+                        {
+                            <a class="list-group-item list-group-item-action"
+                               asp-page="/Booking/Book"
+                               asp-route-barberProfileId="@Model.BarberProfileId"
+                               asp-route-serviceOfferingId="@Model.ServiceOfferingId">
+                                @slot.StartAt.ToLocalTime().ToString("f")
+                            </a>
+                        }
+                    </div>
+                }
+
+                <div class="mt-3">
+                    <a asp-page="/Index" class="btn btn-barber">Return Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

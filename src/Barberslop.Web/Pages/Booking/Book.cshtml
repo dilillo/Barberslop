@@ -1,0 +1,69 @@
+@page
+@model Barberslop.Web.Pages.Booking.BookModel
+@{
+    ViewData["Title"] = "Book Appointment";
+}
+
+<h2>Book an Appointment</h2>
+
+@if (Model.ValidationErrors.Count > 0)
+{
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach (var error in Model.ValidationErrors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">@Model.BarberName</h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <input type="hidden" asp-for="BarberProfileId" />
+
+            <div class="mb-3">
+                <label asp-for="ServiceOfferingId" class="form-label">Service</label>
+                <select asp-for="ServiceOfferingId" class="form-select">
+                    <option value="">-- Select Service --</option>
+                    @foreach (var service in Model.Services)
+                    {
+                        <option value="@service.Id">@service.Name (@service.DurationMinutes min - @service.Price.ToString("C"))</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Date" class="form-label">Date</label>
+                <input asp-for="Date" class="form-control" type="date" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SlotStartAt" class="form-label">Available Time</label>
+                <select asp-for="SlotStartAt" class="form-select">
+                    <option value="">-- Select Time --</option>
+                    @foreach (var slot in Model.AvailableSlots)
+                    {
+                        <option value="@slot.StartAt.ToString("o")">@slot.StartAt.ToLocalTime().ToString("h:mm tt") - @slot.EndAt.ToLocalTime().ToString("h:mm tt")</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="BookForId" class="form-label">Booking For</label>
+                <select asp-for="BookForId" class="form-select">
+                    @foreach (var member in Model.FamilyMembers)
+                    {
+                        <option value="@member.Id">@member.DisplayName</option>
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-barber">Book Appointment</button>
+        </form>
+    </div>
+</div>

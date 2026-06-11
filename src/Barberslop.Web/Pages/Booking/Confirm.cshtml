@@ -1,0 +1,47 @@
+@page
+@model Barberslop.Web.Pages.Booking.ConfirmModel
+@{
+    ViewData["Title"] = "Booking Confirmed";
+}
+
+<div class="text-center">
+    <div class="mb-4">
+        <partial name="Shared/_BarberPole" />
+    </div>
+    <h2 class="text-barber-navy">Appointment Confirmed!</h2>
+</div>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Appointment Details</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Barber</dt>
+                    <dd class="col-sm-8">@Model.BarberName</dd>
+
+                    <dt class="col-sm-4">Service</dt>
+                    <dd class="col-sm-8">@Model.ServiceName</dd>
+
+                    <dt class="col-sm-4">Date & Time</dt>
+                    <dd class="col-sm-8">@Model.StartAt.ToLocalTime().ToString("f")</dd>
+
+                    <dt class="col-sm-4">Duration</dt>
+                    <dd class="col-sm-8">@((Model.EndAt - Model.StartAt).TotalMinutes) minutes</dd>
+
+                    <dt class="col-sm-4">Booked For</dt>
+                    <dd class="col-sm-8">@Model.BookedFor</dd>
+                </dl>
+            </div>
+            <div class="card-footer">
+                <form asp-page="/Booking/Cancel" method="post" class="d-inline">
+                    <input type="hidden" name="AppointmentId" value="@Model.AppointmentId" />
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Cancel Appointment</button>
+                </form>
+                <a asp-page="/Index" class="btn btn-barber btn-sm float-end">Return Home</a>
+            </div>
+        </div>
+    </div>
+</div>

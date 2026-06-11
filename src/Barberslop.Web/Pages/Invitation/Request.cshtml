@@ -1,0 +1,11 @@
+@page
+@model Barberslop.Web.Pages.Invitation.RequestModel
+@{
+    ViewData["Title"] = "Request Sent";
+}
+
+<div class="text-center">
+    <h2>Request Sent!</h2>
+    <p>Your request to join @Model.BarberName's clientele has been submitted. You'll be notified when they accept.</p>
+    <a asp-page="/Invitation/Discover" class="btn btn-barber">Find More Barbers</a>
+</div>

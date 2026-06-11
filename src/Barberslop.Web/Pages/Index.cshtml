@@ -1,0 +1,50 @@
+@page
+@model Barberslop.Web.Pages.IndexModel
+@{
+    ViewData["Title"] = "Welcome";
+}
+
+<div class="hero-section text-center">
+    <h1>Welcome to Barberslop</h1>
+    <p class="lead">Your neighborhood barbershop booking platform</p>
+    @if (!User.Identity?.IsAuthenticated ?? true)
+    {
+        <div class="mt-4">
+            <a asp-page="/Account/Register" class="btn btn-light btn-lg me-2">Get Started</a>
+            <a asp-page="/Account/Login" class="btn btn-outline-light btn-lg">Sign In</a>
+        </div>
+    }
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card feature-card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">Find Your Barber</h5>
+            </div>
+            <div class="card-body">
+                <p>Discover barbers in your area, browse their services, and request to join their clientele.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card feature-card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">Book Appointments</h5>
+            </div>
+            <div class="card-body">
+                <p>View real-time availability and book appointments for yourself or family members.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card feature-card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">Stay Reminded</h5>
+            </div>
+            <div class="card-body">
+                <p>Get reminders via email, SMS, calendar invites, and push notifications.</p>
+            </div>
+        </div>
+    </div>
+</div>
